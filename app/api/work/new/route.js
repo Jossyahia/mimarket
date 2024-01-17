@@ -16,6 +16,7 @@ export async function POST(req) {
       process.env.NEXT_PUBLIC_SUPABASE_URL,
       process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
     );
+
     /* Extract info from the data */
     const creator = data.get("creator");
     const category = data.get("category");
@@ -26,37 +27,32 @@ export async function POST(req) {
     /* Get an array of uploaded photos */
     const photos = data.getAll("workPhotoPaths");
     const bucket = "fastfastfood";
-      const workPhotoPaths = [];
+    const workPhotoPaths = [];
 
-    /* Process and store each photo  */
+    /* Process and store each photo */
     for (const photo of photos) {
-      console.log(photo);
-
       const ext = photo.name.split(".").pop();
       const newphotosName = uniqid() + "." + ext;
-      // Convert it to a Buffer
-      // Read the photo as an ArrayBuffer
-      const bytes = await photo.arrayBuffer();
 
+      // Convert it to a Buffer
+      const bytes = await photo.arrayBuffer();
       const buffer = Buffer.from(bytes);
 
       // Define the destination path for the uploaded file
-      // Upload file
-      const uploadResult = await supabase.storage
+      const uploadPath = `${newphotosName}`;
+
+      // Upload file with proper content type
+      const { data: uploadResult, error } = await supabase.storage
         .from(bucket)
-        .upload(newphotosName, workPhotoPaths);
-      const { error } = uploadResult;
+        .upload(uploadPath, buffer, {
+          contentType: photo.type, // Specify the content type based on the original file type
+        });
 
-      /// const workImagePath = `C:/Users/HP/Desktop/mimarket/public/uploads/${photo.name}`;
-
-      // Write the buffer to the filessystem
-      //await writeFile(workImagePath, buffer);
-
-      // Store the file path in an array
-      // workPhotoPaths.push(`/uploads/${photo.name}`);
       if (error) {
-        return Response.json({ error });
+        console.error(error);
+        return new Response(JSON.stringify({ error }), { status: 500 });
       }
+
       const link =
         "https://frsmcjzgunhzcsxffmyj.supabase.co/storage/v1/object/public/" +
         bucket +
@@ -80,7 +76,7 @@ export async function POST(req) {
 
     return new Response(JSON.stringify(newWork), { status: 200 });
   } catch (err) {
-    console.log(err);
+    console.error(err);
     return new Response("Failed to create a new Work", { status: 500 });
   }
 }
