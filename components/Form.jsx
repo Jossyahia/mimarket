@@ -1,37 +1,35 @@
+import React from "react";
 import { categories } from "@data";
 import { IoIosImages } from "react-icons/io";
 import { BiTrash } from "react-icons/bi";
-
 import "@styles/Form.scss";
 
 const Form = ({ type, work, setWork, handleSubmit }) => {
   const handleUploadPhotos = (e) => {
     const newPhotos = e.target.files;
-    setWork((prevWork) => {
-      return {
-        ...prevWork,
-        photos: [...prevWork.photos, ...newPhotos],
-      };
-    });
+    setWork((prevWork) => ({
+      ...prevWork,
+      photos: [...prevWork.photos, ...newPhotos],
+    }));
   };
 
   const handleRemovePhoto = (indexToRemove) => {
-    setWork((prevWork) => {
-      return {
-        ...prevWork,
-        photos: prevWork.photos.filter((_, index) => index !== indexToRemove),
-      };
-    });
+    setWork((prevWork) => ({
+      ...prevWork,
+      photos: prevWork.photos.filter((_, index) => index !== indexToRemove),
+    }));
   };
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setWork((prevWork) => {
-      return {
-        ...prevWork,
-        [name]: value,
-      };
-    });
+    setWork((prevWork) => ({
+      ...prevWork,
+      [name]: value,
+    }));
+  };
+
+  const handleCategoryClick = (item) => {
+    setWork((prevWork) => ({ ...prevWork, category: item }));
   };
 
   return (
@@ -43,10 +41,8 @@ const Form = ({ type, work, setWork, handleSubmit }) => {
           {categories?.map((item, index) => (
             <p
               key={index}
-              className={`${work.category === item ? "selected" : ""}`}
-              onClick={() => {
-                setWork({ ...work, category: item });
-              }}
+              className={work.category === item ? "selected" : ""}
+              onClick={() => handleCategoryClick(item)}
             >
               {item}
             </p>
@@ -54,57 +50,65 @@ const Form = ({ type, work, setWork, handleSubmit }) => {
         </div>
 
         <h3>Add some photos of your work</h3>
-        {work.photos.length < 1 && (
-          <div className="photos">
-            <input
-              id="image"
-              type="file"
-              style={{ display: "none" }}
-              accept="image/*"
-              onChange={handleUploadPhotos}
-              multiple
-            />
-            <label htmlFor="image" className="alone">
-              <div className="icon">
-                <IoIosImages />
-              </div>
-              <p>Upload from your device</p>
-            </label>
-          </div>
-        )}
+        <div className="photos">
+          {work.photos.length < 1 && (
+            <>
+              <input
+                id="image"
+                type="file"
+                style={{ display: "none" }}
+                accept="image/*"
+                onChange={handleUploadPhotos}
+                multiple
+              />
+              <label htmlFor="image" className="alone">
+                <div className="icon">
+                  <IoIosImages />
+                </div>
+                <p>Upload from your device</p>
+              </label>
+            </>
+          )}
 
-        {work.photos.length > 0 && (
-          <div className="photos">
-            {work?.photos?.map((photo, index) => (
-              <div key={index} className="photo">
-                {photo instanceof Object ? (
-                  <img src={URL.createObjectURL(photo)} alt="work" />
-                ) : (
-                  <img src={photo} alt="work" />
-                )}
-                <button type="button" onClick={() => handleRemovePhoto(index)}>
-                  <BiTrash />
-                </button>
-              </div>
-            ))}
-            <input
-              id="image"
-              type="file"
-              style={{ display: "none" }}
-              accept="image/*"
-              onChange={handleUploadPhotos}
-              multiple
-            />
-            <label htmlFor="image" className="together">
-              <div className="icon">
-                <IoIosImages />
-              </div>
-              <p>Upload from your device</p>
-            </label>
-          </div>
-        )}
+          {work.photos.length > 0 && (
+            <>
+              {work?.photos?.map((photo, index) => (
+                <div key={index} className="photo">
+                  <img
+                    src={
+                      photo instanceof Object
+                        ? URL.createObjectURL(photo)
+                        : photo
+                    }
+                    alt="work"
+                  />
+                  <button
+                    type="button"
+                    onClick={() => handleRemovePhoto(index)}
+                  >
+                    <BiTrash />
+                  </button>
+                </div>
+              ))}
+              <input
+                id="image"
+                type="file"
+                style={{ display: "none" }}
+                accept="image/*"
+                onChange={handleUploadPhotos}
+                multiple
+              />
+              <label htmlFor="image" className="together">
+                <div className="icon">
+                  <IoIosImages />
+                </div>
+                <p>Upload from your device</p>
+              </label>
+            </>
+          )}
+        </div>
 
-        <h3>What make your Work attractive?</h3>
+        <h3>What makes your work attractive?</h3>
         <div className="description">
           <p>Title</p>
           <input
