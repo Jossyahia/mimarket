@@ -6,6 +6,7 @@ import { signOut, useSession } from 'next-auth/react'
 import Link from 'next/link'
 import React, { useState } from 'react'
 import { useRouter } from "next/navigation"
+import Logo from "./Logo"
 
 const Navbar = () => {
   const { data: session } = useSession()
@@ -29,7 +30,7 @@ const Navbar = () => {
   return (
     <div className='navbar'>
       <a href="/">
-        <img src='/assets/logo.png' alt='logo'/>
+        < Logo/>
       </a>
 
       <div className='navbar_search'>
