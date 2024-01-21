@@ -1,6 +1,8 @@
 import Work from "@models/Work";
 import { writeFile } from "fs/promises";
 import { connectToDB } from "@mongodb/database";
+import { createClient } from "@supabase/supabase-js";
+import uniqid from "uniqid";
 
 export const GET = async (req, { params }) => {
   try {
@@ -21,7 +23,11 @@ export const PATCH = async (req, { params }) => {
     await connectToDB();
 
     const data = await req.formData();
-
+    // Create Supabase client
+    const supabase = createClient(
+      process.env.NEXT_PUBLIC_SUPABASE_URL,
+      process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
+    );
     /* Extract info from the data */
     const creator = data.get("creator");
     const category = data.get("category");
@@ -31,12 +37,14 @@ export const PATCH = async (req, { params }) => {
 
     /* Get an array of uploaded photos */
     const photos = data.getAll("workPhotoPaths");
-
+    const bucket = "fastfastfood";
     const workPhotoPaths = [];
 
     /* Process and store each photo  */
     for (const photo of photos) {
       if (photo instanceof Object) {
+        const ext = photo.name.split(".").pop();
+        const newphotosName = uniqid() + "." + ext;
         // Read the photo as an ArrayBuffer
         const bytes = await photo.arrayBuffer();
 
@@ -44,16 +52,28 @@ export const PATCH = async (req, { params }) => {
         const buffer = Buffer.from(bytes);
 
         // Define the destination path for the uploaded file
-        const workImagePath = `C:/Users/Phuc/Desktop/artify/public/uploads/${photo.name}`;
+        const workImagePath = `${newphotosName}`;
 
-        // Write the buffer to the filessystem
-        await writeFile(workImagePath, buffer);
+        // Upload the buffer to Supabase Storage
+        const { data: uploadResult, error } = await supabase.storage
+          .from(bucket) // Replace with your Supabase storage bucket name
+          .upload(workImagePath, buffer, {
+            contentType: photo.type,
+            upsert: true,
+          });
+
+        if (error) {
+          console.error(error);
+          return new Response("Error updating the Work", { status: 500 });
+        }
 
         // Store the file path in an array
-        workPhotoPaths.push(`/uploads/${photo.name}`);
+        workPhotoPaths.push(uploadResult.Key);
+        console.log("updated");
       } else {
         // If it's an old photo
         workPhotoPaths.push(photo);
+        console.log(photo);
       }
     }
 
@@ -75,7 +95,7 @@ export const PATCH = async (req, { params }) => {
 
     return new Response("Successfully updated the Work", { status: 200 });
   } catch (err) {
-    console.log(err);
+    console.error(err);
     return new Response("Error updating the Work", { status: 500 });
   }
 };
