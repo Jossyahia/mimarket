@@ -1,39 +1,24 @@
 import mongoose from "mongoose";
-/*
-const isConnected = {};
+
+let isConnected = false; // Track the connection
 
 export const connectToDB = async () => {
+  mongoose.set("strictQuery", true);
+
   try {
-    if (connection.isConnected) {
-      console.log("Using existing connection");
+    if (isConnected) {
+      console.log("MongoDB is already connected!");
       return;
     }
-    const db = await mongoose.connect(process.env.MONGO);
-    connection.isConnected = db.connections[0].readyState;
-  } catch (error) {
-    console.log(error);
-    throw new Error(error);
+
+    await mongoose.connect(process.env.MONGO);
+
+    isConnected = true;
+
+    console.log("MongoDB connected");
+  } catch (err) {
+    isConnected = false;
+    console.error("MongoDB connection error:", err.message);
+    throw new Error("MongoDB connection error");
   }
 };
-
-*/
-let isConnected = false // Track the connection
-
-export const connectToDB = async () => {
-  mongoose.set('strictQuery', true)
-
-  if (isConnected) {
-    console.log("MongoDB is connected successfully!")
-    return
-  }
-
-  try {
-    await mongoose.connect(process.env.MONGO)
-
-    isConnected = true
-
-    console.log("MongoDB connected")
-  } catch (err) {
-    console.log(err)
-  }
-}

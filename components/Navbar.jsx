@@ -1,70 +1,85 @@
-"use client"
-import "@styles/Navbar.scss"
-import { Menu, Person, Search, ShoppingCart } from '@mui/icons-material'
-import { IconButton } from '@mui/material'
-import { signOut, useSession } from 'next-auth/react'
-import Link from 'next/link'
-import React, { useState } from 'react'
-import { useRouter } from "next/navigation"
-import Logo from "./Logo"
+"use client";
+import "@styles/Navbar.scss";
+import { Menu, Person, Search, ShoppingCart } from "@mui/icons-material";
+import { IconButton } from "@mui/material";
+import { signOut, useSession } from "next-auth/react";
+import Link from "next/link";
+import React, { useState } from "react";
+import { useRouter } from "next/navigation";
+import Logo from "./Logo";
 
 const Navbar = () => {
-  const { data: session } = useSession()
-  const user = session?.user
+  const { data: session } = useSession();
+  const user = session?.user;
 
-  const [dropdownMenu, setDropdownMenu] = useState(false)
+  const [dropdownMenu, setDropdownMenu] = useState(false);
 
   const handleLogout = async () => {
-    signOut({ callbackUrl: '/' })
-  }
+    signOut({ callbackUrl: "/" });
+  };
 
-  const [query, setQuery] = useState('')
- 
-  const router = useRouter()
+  const [query, setQuery] = useState("");
+
+  const router = useRouter();
   const searchWork = async () => {
-    router.push(`/search/${query}`)
-  }
+    router.push(`/search/${query}`);
+  };
 
-  const cart = user?.cart
-  
+  const cart = user?.cart;
+
   return (
-    <div className='navbar'>
+    <div className="navbar">
       <a href="/">
-        < Logo/>
+        <Logo />
       </a>
 
-      <div className='navbar_search'>
-        <input type='text' placeholder='Search...' value={query} onChange={(e) => setQuery(e.target.value)}/>
-        <IconButton disabled={query === ""}>
-          <Search sx={{ color: "red" }} onClick={searchWork}/>
+      <div className="navbar_search">
+        <input
+          type="text"
+          placeholder="Search..."
+          value={query}
+          onChange={(e) => setQuery(e.target.value)}
+        />
+        <IconButton disabled={query === ""} onClick={searchWork}>
+          <Search sx={{ color: "red" }} />
         </IconButton>
       </div>
 
-      <div className='navbar_right'>
+      <div className="navbar_right">
         {user && (
           <a href="/cart" className="cart">
-            <ShoppingCart sx={{ color: "gray" }}/>
+            <ShoppingCart sx={{ color: "gray" }} />
             Cart <span>({cart?.length})</span>
           </a>
         )}
-        <button className='navbar_right_account' onClick={() => setDropdownMenu(!dropdownMenu)}>
-          <Menu sx={{ color: "gray" }} />
+        <div className="navbar_right_account">
+          <IconButton onClick={() => setDropdownMenu(!dropdownMenu)}>
+            <Menu sx={{ color: "gray" }} />
+          </IconButton>
           {!user ? (
-            <Person sx={{ color: "gray" }} />
+            <IconButton onClick={() => setDropdownMenu(!dropdownMenu)}>
+              <Person sx={{ color: "gray" }} />
+            </IconButton>
           ) : (
-            <img src={user.profileImagePath} alt='profile' style={{ objectFit: "cover", borderRadius: "50%" }} />
+            <IconButton onClick={() => setDropdownMenu(!dropdownMenu)}>
+              <img
+                src={user.profileImagePath}
+                alt="profile"
+                style={{ objectFit: "cover", borderRadius: "50%" }}
+              />
+            </IconButton>
           )}
-        </button>
+        </div>
 
         {dropdownMenu && !user && (
-          <div className='navbar_right_accountmenu'>
+          <div className="navbar_right_accountmenu">
             <Link href="/login">Log In</Link>
             <Link href="/register">Sign Up</Link>
           </div>
         )}
 
         {dropdownMenu && user && (
-          <div className='navbar_right_accountmenu'>
+          <div className="navbar_right_accountmenu">
             <Link href="/wishlist">Wishlist</Link>
             <Link href="/cart">Cart</Link>
             <Link href="/order">Orders</Link>
@@ -73,11 +88,9 @@ const Navbar = () => {
             <a onClick={handleLogout}>Log Out</a>
           </div>
         )}
-
       </div>
-      
     </div>
-  )
-}
+  );
+};
 
-export default Navbar
+export default Navbar;
