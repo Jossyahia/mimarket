@@ -1,0 +1,1 @@
+{"version":1,"functions":{"/api/order":{},"/api/stripe":{},"/api/user/[id]/cart":{},"/api/user/[id]/shop":{},"/api/user/[id]/wishlist/[workId]":{},"/api/work/[id]":{},"/api/work/list/[category]":{},"/api/work/search/[query]":{}}}
