@@ -6,7 +6,7 @@ import { signOut, useSession } from "next-auth/react";
 import Link from "next/link";
 import React, { useState } from "react";
 import { useRouter } from "next/navigation";
-import Logo from "./logo";
+import Logo from "./Logo";
 
 const Navbar = () => {
   const { data: session } = useSession();
@@ -40,8 +40,8 @@ const Navbar = () => {
           value={query}
           onChange={(e) => setQuery(e.target.value)}
         />
-        <IconButton disabled={query === ""}>
-          <Search sx={{ color: "red" }} onClick={searchWork} />
+        <IconButton disabled={query === ""} onClick={searchWork}>
+          <Search sx={{ color: "red" }} />
         </IconButton>
       </div>
 
@@ -52,21 +52,24 @@ const Navbar = () => {
             Cart <span>({cart?.length})</span>
           </a>
         )}
-        <button
-          className="navbar_right_account"
-          onClick={() => setDropdownMenu(!dropdownMenu)}
-        >
-          <Menu sx={{ color: "gray" }} />
+        <div className="navbar_right_account">
+          <IconButton onClick={() => setDropdownMenu(!dropdownMenu)}>
+            <Menu sx={{ color: "gray" }} />
+          </IconButton>
           {!user ? (
-            <Person sx={{ color: "gray" }} />
+            <IconButton onClick={() => setDropdownMenu(!dropdownMenu)}>
+              <Person sx={{ color: "gray" }} />
+            </IconButton>
           ) : (
-            <img
-              src={user.profileImagePath}
-              alt="profile"
-              style={{ objectFit: "cover", borderRadius: "50%" }}
-            />
+            <IconButton onClick={() => setDropdownMenu(!dropdownMenu)}>
+              <img
+                src={user.profileImagePath}
+                alt="profile"
+                style={{ objectFit: "cover", borderRadius: "50%" }}
+              />
+            </IconButton>
           )}
-        </button>
+        </div>
 
         {dropdownMenu && !user && (
           <div className="navbar_right_accountmenu">
