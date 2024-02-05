@@ -64,31 +64,59 @@ const Cart = () => {
   const subtotal = calcSubtotal(cart);
 
   const handleCheckout = async () => {
-    const stripe = await getStripe()
+  // Check if there are items in the cart
+  if (cart.length === 0) {
+    toast.error("Your cart is empty. Add items before checkout.");
+    return;
+  }
 
-    const response = await fetch("/api/stripe", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ cart, userId }),
-    })
+  // Check if the user is logged in
+  if (!userId) {
+    toast.error("Please log in before checking out.");
+    return;
+  }
 
-    if (response.statusCode === 500) {
-      return
-    }
+  // Your existing Stripe checkout logic
+  const stripe = await getStripe();
 
-    const data = await response.json()
+  const response = await fetch("/api/stripe", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({ cart, userId }),
+  });
 
-    toast.loading("Redirecting to checkout...")
+  if (response.statusCode === 500) {
+    toast.error("Error generating checkout session.");
+    return;
+  }
 
-    const result = stripe.redirectToCheckout({ sessionId: data.id })
+  const data = await response.json();
+
+  // Display a loading toast
+  toast.loading("Redirecting to checkout...");
+
+  // Handle different payment methods based on user preference
+  const paymentMethod = "stripe"; // You can replace this with user's preferred payment method
+
+  if (paymentMethod === "stripe") {
+    // Redirect to Stripe Checkout for online payment
+    const result = await stripe.redirectToCheckout({ sessionId: data.id });
 
     if (result.error) {
-      console.log(result.error.message)
-      toast.error("Something went wrong")
+      console.error(result.error.message);
+      toast.error("Something went wrong with Stripe Checkout.");
     }
+  } else if (paymentMethod === "payondelivery") {
+    // Add logic for "Pay on Delivery" here
+    // For example, show a confirmation message and update order status in the backend
+    toast.success("Your order is confirmed. You can pay on delivery.");
+  } else {
+    toast.error("Invalid payment method selected.");
   }
+};
+
 
   //console.log(cart, 'this is cart')
   return !session?.user?.cart ? <Loader /> : (
