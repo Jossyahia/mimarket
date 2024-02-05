@@ -1,3 +1,4 @@
+"use client";
 import Navbar from "@components/Navbar";
 import Loader from "@components/Loader";
 import WorkList from "@components/WorkList";

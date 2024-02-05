@@ -1,13 +1,7 @@
 {
-  "/login/page": "app/login/page.js",
   "/register/page": "app/register/page.js",
   "/page": "app/page.js",
   "/work-details/page": "app/work-details/page.js",
-  "/api/work/list/[category]/route": "app/api/work/list/[category]/route.js",
-  "/api/auth/[...nextauth]/route": "app/api/auth/[...nextauth]/route.js",
   "/search/[query]/page": "app/search/[query]/page.js",
-  "/api/work/search/[query]/route": "app/api/work/search/[query]/route.js",
-  "/api/work/[id]/route": "app/api/work/[id]/route.js",
-  "/api/user/[id]/cart/route": "app/api/user/[id]/cart/route.js",
   "/cart/page": "app/cart/page.js"
 }
