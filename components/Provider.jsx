@@ -1,13 +1,18 @@
-"use client"
+"use client";
+import { SessionProvider } from "next-auth/react";
 
-import { SessionProvider } from "next-auth/react"
-
-const Provider = ({ children, session }) => {
+/**
+ * CustomAuthProvider Component
+ *
+ * @param {Object} props - Component properties
+ * @param {Object} props.userSession - The user session object from NextAuth
+ * @param {ReactNode} props.children - The child components to be wrapped by the provider
+ */
+const CustomAuthProvider = ({ children, userSession }) => {
   return (
-    <SessionProvider session={session}>
-      {children}
-    </SessionProvider>
-  )
-}
+    // Provide user session information to the SessionProvider
+    <SessionProvider session={userSession}>{children}</SessionProvider>
+  );
+};
 
-export default Provider
+export default CustomAuthProvider;

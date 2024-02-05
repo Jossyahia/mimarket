@@ -11,7 +11,6 @@ import { useRouter } from "next/navigation";
 import { useState } from "react";
 
 const WorkCard = ({ work }) => {
-  /* SLIDER FOR PHOTOS */
   const [currentIndex, setCurrentIndex] = useState(0);
 
   const goToNextSlide = () => {
@@ -30,7 +29,6 @@ const WorkCard = ({ work }) => {
 
   const router = useRouter();
 
-  /* DELETE WORK */
   const handleDelete = async () => {
     const hasConfirmed = confirm("Are you sure you want to delete this work?");
 
@@ -49,17 +47,19 @@ const WorkCard = ({ work }) => {
   const { data: session, update } = useSession();
   const userId = session?.user?._id;
 
-  /* ADD TO WISHLIST */
   const wishlist = session?.user?.wishlist;
-
   const isLiked = wishlist?.find((item) => item?._id === work._id);
 
   const patchWishlist = async () => {
-    const response = await fetch(`api/user/${userId}/wishlist/${work._id}`, {
-      method: "PATCH",
-    });
-    const data = await response.json();
-    update({ user: { wishlist: data.wishlist } }); // update session
+    try {
+      const response = await fetch(`api/user/${userId}/wishlist/${work._id}`, {
+        method: "PATCH",
+      });
+      const data = await response.json();
+      update({ user: { wishlist: data.wishlist } });
+    } catch (err) {
+      console.log(err);
+    }
   };
 
   return (

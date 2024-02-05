@@ -1,46 +1,43 @@
 "use client"
-
-import Loader from '@components/Loader'
-import Navbar from '@components/Navbar'
-import WorkList from '@components/WorkList'
-import { useParams } from 'next/navigation'
-import React, { useState, useEffect } from 'react'
-import "styles/Search.scss"
+import React, { useState, useEffect } from "react";
+import { useParams } from "next/navigation";
+import Loader from "@components/Loader";
+import Navbar from "@components/Navbar";
+import WorkList from "@components/WorkList";
+import "styles/Search.scss";
 
 const SearchPage = () => {
-  const { query } = useParams()
-
-  const [loading, setLoading] = useState(true)
-
-  const [workList, setWorkList] = useState([])
+  const { query } = useParams();
+  const [loading, setLoading] = useState(true);
+  const [workList, setWorkList] = useState([]);
 
   const getWorkList = async () => {
     try {
       const response = await fetch(`/api/work/search/${query}`, {
-        method: 'GET',
-      })
+        method: "GET",
+      });
 
-      const data = await response.json()
-      setWorkList(data)
-      setLoading(false)
+      const data = await response.json();
+      setWorkList(data);
+      setLoading(false);
     } catch (err) {
-      console.log(err)
+      console.error(err); // Use console.error for error messages
     }
-  }
+  };
 
   useEffect(() => {
-    getWorkList()
-  }, [query])
+    getWorkList();
+  }, [query]);
 
-  return loading ? <Loader /> : (
+  return loading ? (
+    <Loader />
+  ) : (
     <>
       <Navbar />
-
-      <h1 className='title-list'>{query} result(s)</h1>
-
+      <h1 className="title-list">{query} result(s)</h1>
       <WorkList data={workList} />
     </>
-  )
-}
+  );
+};
 
-export default SearchPage
+export default SearchPage;
