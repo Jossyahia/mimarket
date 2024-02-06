@@ -257,6 +257,7 @@ const WorkDetails = () => {
             )}
           </>
         )}
+        <Link href="/">Go Back</Link>
       </div>
     </>
   );

@@ -6,6 +6,8 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { useEffect } from "react";
 import { signIn } from "next-auth/react";
+import Link from "next/link";
+
 
 const Register = () => {
   const [formData, setFormData] = useState({
@@ -137,6 +139,7 @@ const Register = () => {
           <FcGoogle />
         </button>
         <a href="/login">Already have an account? Log In Here</a>
+        <Link href="/">Go Back</Link>
       </div>
     </div>
   );

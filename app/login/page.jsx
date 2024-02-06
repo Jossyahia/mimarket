@@ -5,6 +5,8 @@ import { signIn } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { FcGoogle } from "react-icons/fc";
+import Link from "next/link";
+
 
 const Login = () => {
   const [email, setEmail] = useState("");
@@ -68,6 +70,7 @@ const Login = () => {
           <FcGoogle />
         </button>
         <a href="/register">Don't have an account? Sign In Here</a>
+        <Link href="/">Go Back</Link>
       </div>
     </div>
   );
