@@ -30,3 +30,9 @@ yarn-error.log*
 
 # vercel
 .vercel
+
+# my tools
+action.js
+crfmtr.jsx
+delfm.jsx
+produt_model.js
