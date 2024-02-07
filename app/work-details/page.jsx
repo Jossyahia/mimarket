@@ -1,3 +1,4 @@
+// Import necessary modules and components
 "use client";
 import "@styles/WorkDetails.scss";
 import { useSearchParams } from "next/navigation";
@@ -42,14 +43,17 @@ const WorkDetails = () => {
         });
 
         if (!response.ok) {
-          throw new Error("Failed to fetch work details");
+          throw new Error(
+            `Failed to fetch work details. Status: ${response.status}`
+          );
         }
 
         const data = await response.json();
         setWork(data);
         setLoading(false);
       } catch (error) {
-        setError("Failed to fetch work details. Please try again.");
+        console.error("Error fetching work details:", error);
+        setError(`Failed to fetch work details. ${error.message}`);
         setLoading(false);
       }
     };
