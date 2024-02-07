@@ -1,93 +1,103 @@
+// Import necessary modules and components
 "use client";
-import "@styles/Navbar.scss";
-import { Menu, Person, Search, ShoppingCart } from "@mui/icons-material";
-import { IconButton } from "@mui/material";
-import { signOut, useSession } from "next-auth/react";
-import Link from "next/link";
-import React, { useState } from "react";
+import { useState } from "react";
 import { useRouter } from "next/navigation";
+import { useSession, signOut } from "next-auth/react";
+import { IconButton } from "@mui/material";
+import { Person, Search, Menu, ShoppingCart } from "@mui/icons-material";
+import Link from "next/link";
 import Logo from "./Logo";
+// Import styles
+import "../styles/Navbar.scss";
+import variables from "../styles/variables.module.scss";
 
+// Navbar component
 const Navbar = () => {
   const { data: session } = useSession();
   const user = session?.user;
 
-  const [dropdownMenu, setDropdownMenu] = useState(false);
-
-  const handleLogout = async () => {
-    signOut({ callbackUrl: "/" });
-  };
-
   const [query, setQuery] = useState("");
+  const [dropdownMenu, setDropdownMenu] = useState(false);
 
   const router = useRouter();
 
-  const searchWork = async (e) => {
-    e.preventDefault();
-    router.push(`/search/${query}`);
+  const handleLogout = async () => {
+    await signOut({ callbackUrl: "/login" });
   };
 
-  const cart = user?.cart;
+  const searchWork = () => {
+    const searchPath = query === "" ? "/search/all" : `/search/${query}`;
+    router.push(searchPath);
+  };
 
   return (
     <div className="navbar">
       <Link href="/">
-        <div>
-          <Logo />
-        </div>
+        <Logo/>
       </Link>
 
       <div className="navbar_search">
-        <input
-          type="text"
-          placeholder="Search..."
-          value={query}
-          onChange={(e) => setQuery(e.target.value)}
-        />
-        <IconButton disabled={query === ""} onClick={searchWork}>
-          <Search sx={{ color: "red" }} />
-        </IconButton>
+        <form
+          onSubmit={(e) => {
+            e.preventDefault();
+            searchWork();
+          }}
+        >
+          <input
+            placeholder="Search..."
+            value={query}
+            onChange={(e) => setQuery(e.target.value)}
+          />
+          <IconButton>
+            <Search
+              sx={{ color: variables.pinkred }}
+              onClick={() => searchWork()}
+            />
+          </IconButton>
+        </form>
       </div>
 
       <div className="navbar_right">
         {user && (
           <Link href="/cart">
-            <div className="cart">
-              <ShoppingCart sx={{ color: "gray" }} />
-              Cart <span>({cart?.length})</span>
-            </div>
+            <a className="cart">
+              <ShoppingCart sx={{ color: variables.darkgrey }} />
+              Cart <span>({user?.cart.length})</span>
+            </a>
           </Link>
         )}
 
-        <div className="navbar_right_account">
-          <IconButton onClick={() => setDropdownMenu(!dropdownMenu)}>
-            {user ? (
-              <img
-                src={user.profileImagePath}
-                alt="profile"
-                style={{ objectFit: "cover", borderRadius: "50%" }}
-              />
-            ) : (
-              <Person sx={{ color: "gray" }} />
-            )}
-          </IconButton>
-        </div>
+        <button
+          className="navbar_right_account"
+          onClick={() => setDropdownMenu(!dropdownMenu)}
+        >
+          <Menu sx={{ color: variables.darkgrey }} />
+          {!user ? (
+            <Person sx={{ color: variables.darkgrey }} />
+          ) : (
+            <img
+              src={user.profileImagePath}
+              alt="Profile"
+              style={{ objectFit: "cover", borderRadius: "50%" }}
+            />
+          )}
+        </button>
 
         {dropdownMenu && (
           <div className="navbar_right_accountmenu">
-            {!user ? (
-              <>
-                <Link href="/login">Log In</Link>
-                <Link href="/register">Sign Up</Link>
-              </>
-            ) : (
+            {user ? (
               <>
                 <Link href="/wishlist">Wishlist</Link>
                 <Link href="/cart">Cart</Link>
-                <Link href="/order">Orders</Link>
+                <Link href="/order">Order</Link>
                 <Link href={`/shop?id=${user._id}`}>Your Shop</Link>
-                <Link href="/create-work">Sell Your Work</Link>
+                <Link href="/create-work">Publish Your Work</Link>
                 <a onClick={handleLogout}>Log Out</a>
+              </>
+            ) : (
+              <>
+                <Link href="/login">Log In</Link>
+                <Link href="/register">Sign Up</Link>
               </>
             )}
           </div>
