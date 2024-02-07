@@ -6,7 +6,7 @@ import { useSession, signOut } from "next-auth/react";
 import { IconButton } from "@mui/material";
 import { Person, Search, Menu, ShoppingCart } from "@mui/icons-material";
 import Link from "next/link";
-import Logo from "@components/Logo";
+import Logo_header from "@components/Logo_header";
 // Import styles
 import "../styles/Navbar.scss";
 import variables from "../styles/variables.module.scss";
@@ -33,7 +33,7 @@ const Navbar = () => {
   return (
     <div className="navbar">
       <Link href="/">
-        <Logo />
+        <Logo_header />
       </Link>
 
       <div className="navbar_search">
@@ -48,11 +48,8 @@ const Navbar = () => {
             value={query}
             onChange={(e) => setQuery(e.target.value)}
           />
-          <IconButton>
-            <Search
-              sx={{ color: variables.pinkred }}
-              onClick={() => searchWork()}
-            />
+          <IconButton onClick={searchWork}>
+            <Search sx={{ color: variables.pinkred }} />
           </IconButton>
         </form>
       </div>
