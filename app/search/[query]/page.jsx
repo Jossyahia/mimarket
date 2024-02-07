@@ -4,7 +4,7 @@ import { useParams } from "next/navigation";
 import Loader from "@components/Loader";
 import Navbar from "@components/Navbar";
 import WorkList from "@components/WorkList";
-import "styles/Search.scss";
+import "@styles/Search.scss";
 
 const SearchPage = () => {
   const { query } = useParams();
