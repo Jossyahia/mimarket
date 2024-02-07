@@ -6,7 +6,7 @@ import { useSession, signOut } from "next-auth/react";
 import { IconButton } from "@mui/material";
 import { Person, Search, Menu, ShoppingCart } from "@mui/icons-material";
 import Link from "next/link";
-import Logo from "./Logo";
+import Logo from "@components/Logo";
 // Import styles
 import "../styles/Navbar.scss";
 import variables from "../styles/variables.module.scss";
@@ -33,7 +33,7 @@ const Navbar = () => {
   return (
     <div className="navbar">
       <Link href="/">
-        <Logo/>
+        <Logo />
       </Link>
 
       <div className="navbar_search">
@@ -60,10 +60,10 @@ const Navbar = () => {
       <div className="navbar_right">
         {user && (
           <Link href="/cart">
-            <a className="cart">
+            <div className="cart">
               <ShoppingCart sx={{ color: variables.darkgrey }} />
               Cart <span>({user?.cart.length})</span>
-            </a>
+            </div>
           </Link>
         )}
 
