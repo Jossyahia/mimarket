@@ -1,19 +1,27 @@
 .banner {
   width: 100vw;
-  height: 70vh;
-  background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7));
+  height: 50vh;
+  background: linear-gradient(to bottom, #1a847a, #19947c, #87ceeb);
   background-position: center center;
-  background-size: cover;
   display: flex;
   align-items: center;
   justify-content: center;
-  margin-bottom: 80px;
+  margin-bottom: 40px; /* Adjusted margin for smaller screens */
 
-  h1 {
-    padding: 40px;
-    max-width: 1000px;
-    font-size: 70px;
+  h4 {
+    padding: 10px; /* Adjusted padding for smaller screens */
+    max-width: 90%; /* Improved responsiveness by reducing max-width */
+    font-size: 2.5vw; /* Responsive font size */
     text-align: center;
     color: white;
+  }
+}
+
+/* Media Query for smaller screens */
+@media (max-width: 768px) {
+  .banner {
+    h4 {
+      font-size: 4vw; /* Adjust font size for smaller screens */
+    }
   }
 }

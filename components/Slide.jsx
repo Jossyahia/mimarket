@@ -3,7 +3,10 @@ import "../styles/Banner.scss";
 const Slide = () => {
   return (
     <div className="banner">
-      <h1>Transform your imaginative concepts into reality </h1>
+      <h4>
+        {" "}
+        "Click, Shop, Smile - Elevate Your Everyday with Unbeatable Deals!"
+      </h4>
     </div>
   );
 };
