@@ -11,7 +11,6 @@ const Slide = () => {
       "Click, Shop, Smile - Elevate Your Everyday with Unbeatable Deals!",
       "Discover Amazing Deals That Will Make Your Day!",
       "Shop Smart, Shop Now - Unbelievable Discounts Await!",
-      "A wise consumer understands that the true value of a purchase lies not just in the price paid, but in the quality received. Opting for quality at a pocket-friendly price is a testament to smart shopping.",
       "Your One-Stop Shop for Irresistible Bargains!",
 
       // Add more text options as needed
