@@ -38,7 +38,7 @@ const Slide = () => {
 
   return (
     <div className="banner" suppressHydrationWarning={true}>
-      <h3>{randomStaticText}</h3>
+      <h1>{randomStaticText}</h1>
     </div>
   );
 };
