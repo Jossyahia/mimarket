@@ -64,18 +64,21 @@ const WorkDetails = () => {
   }, [workId]);
 
   const goToNextSlide = () => {
-    setCurrentIndex((prevIndex) => (prevIndex + 1) % workPhotoPaths.length);
+    setCurrentIndex(
+      (prevIndex) => (prevIndex + 1) % (workPhotoPaths?.length || 1)
+    );
   };
 
   const goToPrevSlide = () => {
     setCurrentIndex(
       (prevIndex) =>
-        (prevIndex - 1 + workPhotoPaths.length) % workPhotoPaths.length
+        (prevIndex - 1 + (workPhotoPaths?.length || 1)) %
+        (workPhotoPaths?.length || 1)
     );
   };
 
   const loadMorePhotos = () => {
-    setVisiblePhotos(workPhotoPaths.length);
+    setVisiblePhotos(workPhotoPaths?.length || 0);
   };
 
   const handleSelectedPhoto = (index) => {
@@ -111,7 +114,7 @@ const WorkDetails = () => {
   const addToCart = async () => {
     const newCartItem = {
       workId,
-      image: workPhotoPaths[0],
+      image: workPhotoPaths?.[0],
       title: work.title,
       category: work.category,
       creator: work.creator,
@@ -183,34 +186,35 @@ const WorkDetails = () => {
                 className="slider"
                 style={{ transform: `translateX(-${currentIndex * 100}%)` }}
               >
-                {Array.isArray(workPhotoPaths) &&
-                  workPhotoPaths.map((photo, index) => (
-                    <div className="slide" key={index}>
-                      <img src={photo} alt="work" />
-                      <div className="prev-button" onClick={goToPrevSlide}>
-                        <ArrowBackIosNew sx={{ fontSize: "15px" }} />
-                      </div>
-                      <div className="next-button" onClick={goToNextSlide}>
-                        <ArrowForwardIos sx={{ fontSize: "15px" }} />
-                      </div>
+                {workPhotoPaths?.map((photo, index) => (
+                  <div className="slide" key={index}>
+                    <img
+                      src={photo}
+                      alt="work"
+                      loading="lazy" // Add lazy loading attribute
+                    />
+                    <div className="prev-button" onClick={goToPrevSlide}>
+                      <ArrowBackIosNew sx={{ fontSize: "15px" }} />
                     </div>
-                  ))}
+                    <div className="next-button" onClick={goToNextSlide}>
+                      <ArrowForwardIos sx={{ fontSize: "15px" }} />
+                    </div>
+                  </div>
+                ))}
               </div>
             </div>
 
             <div className="photos">
-              {Array.isArray(workPhotoPaths) &&
-                workPhotoPaths
-                  .slice(0, visiblePhotos)
-                  .map((photo, index) => (
-                    <img
-                      src={photo}
-                      alt="work-demo"
-                      key={index}
-                      onClick={() => handleSelectedPhoto(index)}
-                      className={selectedPhoto === index ? "selected" : ""}
-                    />
-                  ))}
+              {workPhotoPaths?.slice(0, visiblePhotos)?.map((photo, index) => (
+                <img
+                  src={photo}
+                  alt="work-demo"
+                  key={index}
+                  onClick={() => handleSelectedPhoto(index)}
+                  className={selectedPhoto === index ? "selected" : ""}
+                  loading="lazy" // Add lazy loading attribute
+                />
+              ))}
 
               {visiblePhotos < (workPhotoPaths?.length || 0) && (
                 <div className="show-more" onClick={loadMorePhotos}>
@@ -224,11 +228,11 @@ const WorkDetails = () => {
 
             <div className="profile">
               <img
-                src={creator.profileImagePath}
+                src={creator?.profileImagePath}
                 alt="profile"
-                onClick={() => router.push(`/shop?id=${creator._id}`)}
+                onClick={() => router.push(`/shop?id=${creator?._id}`)}
               />
-              <h3>Created by {creator.username}</h3>
+              <h3>Created by {creator?.username}</h3>
             </div>
 
             <hr />

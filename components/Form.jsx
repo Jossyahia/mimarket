@@ -125,7 +125,7 @@ const Form = ({ type, work, setWork, handleSubmit }) => {
             required
           />
           <p>Now, set your PRICE</p>
-          <span>$</span>
+          <span>#</span>
           <input
             type="number"
             placeholder="Price"
