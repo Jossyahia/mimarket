@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, Suspense } from "react";
 import { useSession } from "next-auth/react";
 import { useSearchParams } from "next/navigation";
 import Loader from "@components/Loader";
@@ -50,18 +50,18 @@ const Shop = () => {
     }
   }, [profileId]);
 
-  return loading ? (
-    <Loader />
-  ) : (
-    <>
-      <Navbar />
-      {loggedInUserId === profileId ? (
-        <h1 className="title-list">Your Works</h1>
-      ) : (
-        <h1 className="title-list">{profile.username}'s Works</h1>
-      )}
-      <WorkList data={workList} />
-    </>
+  return (
+    <Suspense fallback={<Loader />}>
+      <>
+        <Navbar />
+        {loggedInUserId === profileId ? (
+          <h1 className="title-list">Your Works</h1>
+        ) : (
+          <h1 className="title-list">{profile.username}'s Works</h1>
+        )}
+        <WorkList data={workList} />
+      </>
+    </Suspense>
   );
 };
 
