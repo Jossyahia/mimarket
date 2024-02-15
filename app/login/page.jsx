@@ -7,13 +7,12 @@ import { useState } from "react";
 import { FcGoogle } from "react-icons/fc";
 import Link from "next/link";
 
-
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
 
-  const router = useRouter()
+  const router = useRouter();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -26,7 +25,7 @@ const Login = () => {
       });
 
       if (response.ok) {
-        router.push("/")
+        router.push("/");
       }
 
       if (response.error) {
@@ -43,27 +42,10 @@ const Login = () => {
 
   return (
     <div className="login">
-      <img src="/assets/login.jpg" alt="login" className="login_decor" />
       <div className="login_content">
         <form className="login_content_form" onSubmit={handleSubmit}>
-          <input
-            placeholder="Email"
-            name="email"
-            type="email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            required
-          />
-          <input
-            placeholder="Password"
-            name="password"
-            type="password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            required
-          />
-          {error && <p className="error">{error}</p>}
-          <button type="submit">Log In</button>
+           
+          
         </form>
         <button className="google" onClick={loginWithGoogle}>
           <p>Log In with Google</p>

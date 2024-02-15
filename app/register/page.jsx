@@ -65,70 +65,10 @@ const Register = () => {
 
   return (
     <div className="register">
-      <img
-        src="/assets/register.jpg"
-        alt="register"
-        className="register_decor"
-      />
+
       <div className="register_content">
         <form className="register_content_form" onSubmit={handleSubmit}>
-          <input
-            placeholder="Username"
-            name="username"
-            value={formData.username}
-            onChange={handleChange}
-            required
-          />
-          <input
-            placeholder="Email"
-            type="email"
-            name="email"
-            value={formData.email}
-            onChange={handleChange}
-            required
-          />
-          <input
-            placeholder="Password"
-            type="password"
-            name="password"
-            value={formData.password}
-            onChange={handleChange}
-            required
-          />
-          <input
-            placeholder="Confirm Password"
-            type="password"
-            name="confirmPassword"
-            value={formData.confirmPassword}
-            onChange={handleChange}
-            required
-          />
-          {!passwordMatch && (
-            <p style={{ color: "red" }}>Passwords are not matched!</p>
-          )}
-          <input
-            id="image"
-            type="file"
-            name="profileImage"
-            onChange={handleChange}
-            accept="image/*"
-            style={{ display: "none" }}
-            required
-          />
-          <label htmlFor="image">
-            <img src="/assets/addImage.png" alt="add profile" />
-            <p>Upload Profile Photo</p>
-          </label>
-          {formData.profileImage && (
-            <img
-              src={URL.createObjectURL(formData.profileImage)}
-              alt="Profile"
-              style={{ maxWidth: "80px", maxHeight: "100px" }}
-            />
-          )}
-          <button type="submit" disabled={!passwordMatch}>
-            Register
-          </button>
+
         </form>
         <button
           type="button"
