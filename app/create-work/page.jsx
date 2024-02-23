@@ -17,6 +17,7 @@ const CreateWork = () => {
     title: "",
     description: "",
     price: "",
+    phone: "",
     photos: []
   })
 

@@ -233,8 +233,14 @@ const WorkDetails = () => {
                 onClick={() => router.push(`/shop?id=${creator?._id}`)}
               />
               <h3>Created by {creator?.username}</h3>
+              <br />
+              <span style={{ fontWeight: "bold", color: "black" }}>
+                Call:{" "}
+                <span style={{ fontWeight: "bold", color: "darkgreen" }}>
+                  0{work.phone}
+                </span>
+              </span>
             </div>
-
             <hr />
 
             <h3>About this product</h3>

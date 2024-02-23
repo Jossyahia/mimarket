@@ -3,22 +3,25 @@ import { Schema, model, models } from "mongoose"
 const WorkSchema = new Schema({
   creator: {
     type: Schema.Types.ObjectId,
-    ref: "User"
+    ref: "User",
   },
   category: {
     type: String,
   },
   title: {
-    type: String
+    type: String,
   },
   description: {
-    type: String
+    type: String,
   },
   price: {
-    type: Number
+    type: Number,
   },
-  workPhotoPaths: [{type: String}]
-})
+  phone: {
+    type: Number,
+  },
+  workPhotoPaths: [{ type: String }],
+});
 
 const Work = models.Work || model("Work", WorkSchema)
 export default Work

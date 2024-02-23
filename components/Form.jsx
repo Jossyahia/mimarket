@@ -36,14 +36,14 @@ const Form = ({ type, work, setWork, handleSubmit }) => {
 
   return (
     <div className="form">
-      <h1>{type} Your Work</h1>
+      <h1>{type} Your Product</h1>
       <form onSubmit={handleSubmit}>
-        <h3>Which of these categories best describes your work?</h3>
+        <h3>Which of these categories best describes your product?</h3>
         <div className="category-list">
           {categories?.map((item, index) => (
             <p
               key={index}
-              className={`${work.category === item ? "selected" : ""}`}
+              className={`${work.category === item ? "selected" : "All"}`}
               onClick={() => {
                 setWork({ ...work, category: item });
               }}
@@ -53,7 +53,7 @@ const Form = ({ type, work, setWork, handleSubmit }) => {
           ))}
         </div>
 
-        <h3>Add some photos of your work</h3>
+        <h3>Add some photos of your product</h3>
         {work.photos.length < 1 && (
           <div className="photos">
             <input
@@ -78,9 +78,9 @@ const Form = ({ type, work, setWork, handleSubmit }) => {
             {work?.photos?.map((photo, index) => (
               <div key={index} className="photo">
                 {photo instanceof Object ? (
-                  <img src={URL.createObjectURL(photo)} alt="work" />
+                  <img src={URL.createObjectURL(photo)} alt="product" />
                 ) : (
-                  <img src={photo} alt="work" />
+                  <img src={photo} alt="product image" />
                 )}
                 <button type="button" onClick={() => handleRemovePhoto(index)}>
                   <BiTrash />
@@ -104,7 +104,7 @@ const Form = ({ type, work, setWork, handleSubmit }) => {
           </div>
         )}
 
-        <h3>What make your Work attractive?</h3>
+        <h3>Give detailed description of your product</h3>
         <div className="description">
           <p>Title</p>
           <input
@@ -124,6 +124,18 @@ const Form = ({ type, work, setWork, handleSubmit }) => {
             value={work.description}
             required
           />
+          <p>Your Phone Number</p>
+          <input
+            type="tel"
+            minlength="9"
+            maxlength="11"
+            placeholder="Type your phone number"
+            onChange={handleChange}
+            name="phone"
+            value={work.phone}
+            required
+            className="phone"
+          />
           <p>Now, set your PRICE</p>
           <span>#</span>
           <input
@@ -137,7 +149,7 @@ const Form = ({ type, work, setWork, handleSubmit }) => {
           />
         </div>
         <button className="submit_btn" type="submit">
-          PUBLISH YOUR WORK
+          PUBLISH YOUR PRODUCT
         </button>
       </form>
     </div>

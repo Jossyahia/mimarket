@@ -23,6 +23,7 @@ export async function POST(req) {
     const title = data.get("title");
     const description = data.get("description");
     const price = data.get("price");
+    const phone = data.get("phone");
 
     /* Get an array of uploaded photos */
     const photos = data.getAll("workPhotoPaths");
@@ -58,7 +59,6 @@ export async function POST(req) {
         bucket +
         "/" +
         newphotosName;
-      console.log(link);
       workPhotoPaths.push(link);
     }
 
@@ -69,6 +69,7 @@ export async function POST(req) {
       title,
       description,
       price,
+      phone,
       workPhotoPaths,
     });
 

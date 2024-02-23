@@ -30,11 +30,17 @@ const UserSchema = new Schema({
     type: Array,
     default: [],
   },
+  phone: {
+    type: Number,
+  },
+  location: {
+    type: String,
+  },
   works: {
     type: Array,
     default: [],
-  }
-})
+  },
+});
 
 const User = models.User || model("User", UserSchema)
 

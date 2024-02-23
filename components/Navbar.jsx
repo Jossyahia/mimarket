@@ -88,13 +88,16 @@ const Navbar = () => {
                 <Link href="/cart">Cart</Link>
                 <Link href="/order">Order</Link>
                 <Link href={`/shop?id=${user._id}`}>Your Shop</Link>
-                <Link href="/create-work">Publish Your Work</Link>
+                <Link href="/create-work">Publish Products</Link>
                 <a onClick={handleLogout}>Log Out</a>
               </>
             ) : (
               <>
                 <Link href="/login">Log In</Link>
                 <Link href="/register">Sign Up</Link>
+                <Link href="/about">About Us</Link>
+                <Link href="/buyer">How To Buy</Link>
+                <Link href="/seller">How To Sell</Link>
               </>
             )}
           </div>
